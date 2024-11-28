@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react';
 import { UserProfileProps } from '@/types/index.types';
 import { fetuserProfile } from '@/lib/utils';
 import { useMediaResources } from '@/hooks/useMediaResources';
+import MediaConfiguration from '../MediaConfiguration';
 
 const Widget = () => {
-  const [profile, setProfile] = useState<UserProfileProps>(null);
+  const [profile, setProfile] = useState<UserProfileProps | null>(null);
 
   const { user } = useUser();
   const { state, fetchMediaResources } = useMediaResources();
@@ -14,6 +15,7 @@ const Widget = () => {
   useEffect(() => {
     if (user && user.id) {
       fetuserProfile(user.id).then((prof) => setProfile(prof));
+      fetchMediaResources();
     }
   }, [user]);
 
@@ -26,7 +28,7 @@ const Widget = () => {
       </ClerkLoading>
       <SignedIn>
         {profile ? (
-          <MediaConfiguration />
+          <MediaConfiguration user={profile.user} state={state} />
         ) : (
           <div className="w-full h-full flex justify-center items-center">
             <Spinner color="#fff" />

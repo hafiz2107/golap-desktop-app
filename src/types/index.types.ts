@@ -1,4 +1,4 @@
-export type UserProfileProps = {
+export interface UserProfileProps {
   status: number;
   user:
     | ({
@@ -22,7 +22,7 @@ export type UserProfileProps = {
         clerkId: string;
       })
     | null;
-} | null;
+}
 
 export type ResourceDeviceStateProps = {
   displays?: {
