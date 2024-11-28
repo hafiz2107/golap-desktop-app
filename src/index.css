@@ -9,7 +9,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* background-color: #242424; */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -30,9 +30,8 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  /* min-width: 320px; */
+  /* min-height: 100vh; */
 }
 
 h1 {
@@ -155,16 +154,16 @@ button:focus-visible {
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-transparent text-foreground overflow-hidden;
   }
 }
 
 .draggable {
-  --webkit-app-region: drag;
+  -webkit-app-region: drag !important;
 }
 
 .non-draggable {
-  --webkit-app-region: drag;
+  -webkit-app-region: no-drag !important;
 }
 
 ::-webkit-scrollbar {
@@ -177,6 +176,7 @@ button:focus-visible {
 
 #root {
   width: 100%;
+  height: fit-content;
 }
 
 ::-webkit-scrollbar-thumb {
