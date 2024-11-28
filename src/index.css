@@ -159,7 +159,6 @@ button:focus-visible {
   }
 }
 
-
 .draggable {
   --webkit-app-region: drag;
 }
@@ -173,7 +172,11 @@ button:focus-visible {
 }
 
 ::-webkit-scrollbar-track {
-  border-radius: 10pxs;
+  border-radius: 10px;
+}
+
+#root {
+  width: 100%;
 }
 
 ::-webkit-scrollbar-thumb {
