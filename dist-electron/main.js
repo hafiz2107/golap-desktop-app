@@ -1,4 +1,4 @@
-import { app, ipcMain, BrowserWindow } from "electron";
+import { app, ipcMain, desktopCapturer, BrowserWindow } from "electron";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -20,7 +20,7 @@ function createWindow() {
     frame: false,
     transparent: true,
     alwaysOnTop: true,
-    focusable: false,
+    focusable: true,
     movable: true,
     icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
     webPreferences: {
@@ -62,7 +62,7 @@ function createWindow() {
     frame: false,
     transparent: true,
     alwaysOnTop: true,
-    focusable: false,
+    focusable: true,
     movable: true,
     icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
     webPreferences: {
@@ -115,6 +115,31 @@ ipcMain.on("closeApp", () => {
     studio = null;
     floatingWebcam = null;
   }
+});
+ipcMain.handle("getSources", async () => {
+  const data = await desktopCapturer.getSources({
+    thumbnailSize: {
+      height: 100,
+      width: 150
+    },
+    fetchWindowIcons: true,
+    types: ["window", "screen"]
+  });
+  console.log("😎 Data ->", data);
+  return data;
+});
+ipcMain.on("media-sources", (event, payload) => {
+  console.log("Event -> ", event);
+  studio == null ? void 0 : studio.webContents.send("profile-received", payload);
+});
+ipcMain.on("resize-studio", (event, payload) => {
+  console.log("event 2 -> ", event);
+  if (payload.shrink) studio == null ? void 0 : studio.setSize(400, 100);
+  if (!payload.shrink) studio == null ? void 0 : studio.setSize(400, 250);
+});
+ipcMain.on("hide-plugin", (event, payload) => {
+  console.log("Event 3 -> ", event);
+  win == null ? void 0 : win.webContents.send("hide-plugin", payload);
 });
 app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {
