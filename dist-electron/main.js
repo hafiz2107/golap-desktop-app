@@ -76,6 +76,8 @@ function createWindow() {
   win.setAlwaysOnTop(true, "screen-saver", 1);
   studio.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   studio.setAlwaysOnTop(true, "screen-saver", 1);
+  floatingWebcam.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  floatingWebcam.setAlwaysOnTop(true, "screen-saver", 1);
   win.webContents.on("did-finish-load", () => {
     win == null ? void 0 : win.webContents.send("main-process-message", (/* @__PURE__ */ new Date()).toLocaleString());
   });
