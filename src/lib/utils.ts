@@ -1,6 +1,6 @@
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-import axios from 'axios';
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+import axios from "axios";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -10,12 +10,12 @@ const httpClient = axios.create({
   baseURL: import.meta.env.VITE_HOST_URL,
 });
 
-export const onCloseApp = () => window.ipcRenderer.send('closeApp');
+export const onCloseApp = () => window.ipcRenderer.send("closeApp");
 
 export const fetuserProfile = async (clerkId: string) => {
   const response = await httpClient.get(`/auth/${clerkId}`, {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   });
 
@@ -23,22 +23,22 @@ export const fetuserProfile = async (clerkId: string) => {
 };
 
 export const getMediaResources = async () => {
-  const displays = await window.ipcRenderer.invoke('getSources');
+  const displays = await window.ipcRenderer.invoke("getSources");
   const enumeratedDevices =
     await window.navigator.mediaDevices.enumerateDevices();
 
   const audioInputs = enumeratedDevices.filter(
-    (device) => device.kind === 'audioinput'
+    (device) => device.kind === "audioinput"
   );
 
-  console.log('Getting sources');
+  console.log("Getting sources");
   return { displays, audio: audioInputs };
 };
 export const updateStudioSettings = async (
   id: string,
   screen: string,
   audio: string,
-  preset: 'HD' | 'SD'
+  preset: "HD" | "SD"
 ) => {
   const response = await httpClient.post(
     `/studio/${id}`,
@@ -49,10 +49,30 @@ export const updateStudioSettings = async (
     },
     {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     }
   );
 
   return response.data;
+};
+
+export const hidePluginWindow = (state: boolean) => {
+  window.ipcRenderer.send("hide-plugin", { state });
+};
+
+export const videoRecordingTime = (ms: number) => {
+  const second = Math.floor((ms / 1000) % 60)
+    .toString()
+    .padStart(2, "0");
+
+  const minute = Math.floor((ms / 1000 / 60) % 60)
+    .toString()
+    .padStart(2, "0");
+
+  const hour = Math.floor((ms / 1000 / 60 / 60) % 60)
+    .toString()
+    .padStart(2, "0");
+
+  return { length: `${hour}:${minute}:${second}`, minute };
 };

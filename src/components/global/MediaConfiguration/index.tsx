@@ -38,7 +38,7 @@ const MediaConfiguration = ({ state, user }: Props) => {
         <Monitor fill="#575655" color="#575655" size={36} />
         <select
           {...register("screen")}
-          className="outline-none cursor-pointer px-5 py-2 rounded-2xl border-2 text-white border-[#575655] bg-transparent w-full"
+          className="outline-none cursor-pointer px-5 py-2 rounded-2xl border-2 text-white border-[#575655] bg-transparent w-full text-sm"
         >
           {state?.displays?.map((display, key) => (
             <option
@@ -56,7 +56,7 @@ const MediaConfiguration = ({ state, user }: Props) => {
         <Headphones color="#575655" size={36} />
         <select
           {...register("audio")}
-          className="outline-none cursor-pointer px-5 py-2 rounded-2xl border-2 text-white border-[#575655] bg-transparent w-full"
+          className="outline-none cursor-pointer px-5 py-2 rounded-2xl border-2 text-white border-[#575655] bg-transparent w-full text-sm"
         >
           {state?.audioInputs?.map((device, key) => (
             <option
@@ -74,7 +74,7 @@ const MediaConfiguration = ({ state, user }: Props) => {
         <Settings2 color="#575655" size={36} />
         <select
           {...register("preset")}
-          className="outline-none cursor-pointer px-5 py-2 rounded-2xl border-2 text-white border-[#575655] bg-transparent w-full"
+          className="outline-none cursor-pointer px-5 py-2 rounded-2xl border-2 text-white border-[#575655] bg-transparent w-full text-sm"
         >
           <option
             value="HD"

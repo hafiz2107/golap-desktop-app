@@ -1,19 +1,19 @@
-import { UpdateStudioSettingsSchema } from '@/schemas/studio-settings.schema';
-import { useZodForm } from './useZodForm';
-import { useEffect, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { MutationsKeys } from '@/constants/query-keys';
-import { updateStudioSettings } from '@/lib/utils';
-import { toast } from 'sonner';
+import { UpdateStudioSettingsSchema } from "@/schemas/studio-settings.schema";
+import { useZodForm } from "./useZodForm";
+import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { MutationsKeys } from "@/constants/query-keys";
+import { updateStudioSettings } from "@/lib/utils";
+import { toast } from "sonner";
 
 export const useStudioSettings = (
   id: string,
   screen?: string | null,
   audio?: string | null,
-  preset?: 'HD' | 'SD',
-  plan?: 'PRO' | 'FREE'
+  preset?: "HD" | "SD",
+  plan?: "PRO" | "FREE"
 ) => {
-  const [onPreset, setPreset] = useState<'HD' | 'SD' | undefined>();
+  const [onPreset, setPreset] = useState<"HD" | "SD" | undefined>();
   const { register, watch } = useZodForm(UpdateStudioSettingsSchema, {
     screen: screen!,
     audio: audio!,
@@ -26,13 +26,13 @@ export const useStudioSettings = (
       screen: string;
       id: string;
       audio: string;
-      preset: 'HD' | 'SD';
+      preset: "HD" | "SD";
     }) => updateStudioSettings(data.id, data.screen, data.audio, data.preset),
     onSuccess: (data) =>
       toast(
         data.status === 201 || data.status === 200
-          ? 'Success'
-          : 'Something went wrong',
+          ? "Success"
+          : "Something went wrong",
         {
           description: data.message,
         }
@@ -40,8 +40,8 @@ export const useStudioSettings = (
   });
 
   useEffect(() => {
-    if (screen && audio && preset) {
-      window.ipcRenderer.send('media-sources', {
+    if (screen && audio) {
+      window.ipcRenderer.send("media-sources", {
         screen,
         id,
         audio,
@@ -49,7 +49,7 @@ export const useStudioSettings = (
         plan,
       });
     }
-  }, []);
+  }, [screen, audio]);
 
   useEffect(() => {
     const subscribe = watch((values) => {
@@ -62,7 +62,7 @@ export const useStudioSettings = (
       };
 
       mutate(payload);
-      window.ipcRenderer.send('media-sources', { ...payload, plan });
+      window.ipcRenderer.send("media-sources", { ...payload, plan });
     });
 
     return () => subscribe.unsubscribe();

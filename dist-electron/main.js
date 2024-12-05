@@ -12,11 +12,11 @@ let studio;
 let floatingWebcam;
 function createWindow() {
   win = new BrowserWindow({
-    width: 600,
-    height: 600,
+    width: 500,
+    height: 380,
     resizable: false,
-    minHeight: 600,
-    minWidth: 300,
+    minHeight: 300,
+    minWidth: 500,
     frame: false,
     transparent: true,
     alwaysOnTop: true,
@@ -32,7 +32,7 @@ function createWindow() {
   });
   studio = new BrowserWindow({
     width: 400,
-    height: 100,
+    height: 300,
     minHeight: 70,
     minWidth: 300,
     maxHeight: 400,
@@ -41,7 +41,7 @@ function createWindow() {
     frame: false,
     transparent: true,
     alwaysOnTop: true,
-    focusable: false,
+    focusable: true,
     movable: true,
     icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
     webPreferences: {
