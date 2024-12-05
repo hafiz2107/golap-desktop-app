@@ -1,19 +1,38 @@
-import { onStopRecording, StartRecording } from "@/lib/recorder";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { onStopRecording, selectSources, StartRecording } from "@/lib/recorder";
 import { cn, videoRecordingTime } from "@/lib/utils";
 import { Cast, Pause, Square } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const StudioTray = () => {
   const [preview, setPreview] = useState(false);
   const [recording, setRecording] = useState(false);
   const [onTimer, setOnTimer] = useState<string>("00:00:00");
   const [count, setCount] = useState<number>(0);
+  const [onSources, setOnSource] = useState<
+    | {
+        screen: string;
+        id: string;
+        audio: string;
+        preset: "HD" | "SD";
+        plan: "PRO" | "FREE";
+      }
+    | undefined
+  >(undefined);
   const intialTime = new Date();
 
   const clearTime = () => {
     setOnTimer("00:00:00");
     setCount(0);
   };
+
+  useEffect(() => {
+    if (onSources && onSources.screen) selectSources(onSources, videoElement);
+    return () => {
+      selectSources(onSources!, videoElement);
+    };
+  }, [onSources]);
+
   useEffect(() => {
     if (!recording) return;
     const recordTimeIinterval = setInterval(() => {
@@ -37,23 +56,19 @@ const StudioTray = () => {
     return () => clearInterval(recordTimeIinterval);
   }, [recording]);
 
-  const [onSources, setOnSource] = useState<
-    | {
-        screen: string;
-        id: string;
-        audio: string;
-        preset: "HD" | "SD";
-        plan: "PRO" | "FREE";
-      }
-    | undefined
-  >(undefined);
-
   window.ipcRenderer.on("profile-received", (event, payload) => {
     console.log("Event 4 -> ", event);
     setOnSource(payload);
   });
 
   const videoElement = useRef<HTMLVideoElement | null>(null);
+
+  //   useEffect(() => {
+  //     resizeWindow(preview);
+
+  //     return () => resizeWindow(preview);
+  //   }, [preview]);
+
   return !onSources ? (
     <></>
   ) : (
@@ -63,7 +78,7 @@ const StudioTray = () => {
           src=""
           autoPlay
           ref={videoElement}
-          className={cn("w-6/12 border-2 self-end")}
+          className={cn("w-6/12 border-2 self-end rounded-sm")}
         ></video>
       )}
       <div className="rounded-full flex justify-around items-center h-20 w-full border-2 bg-[#171717] draggable border-white/40">

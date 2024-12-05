@@ -54,7 +54,7 @@ export const updateStudioSettings = async (
     }
   );
 
-  return response.data;
+  return response?.data;
 };
 
 export const hidePluginWindow = (state: boolean) => {
@@ -75,4 +75,8 @@ export const videoRecordingTime = (ms: number) => {
     .padStart(2, "0");
 
   return { length: `${hour}:${minute}:${second}`, minute };
+};
+
+export const resizeWindow = (shrink: boolean) => {
+  window.ipcRenderer.send("resize-studio", shrink);
 };
