@@ -90,6 +90,6 @@ export const selectSources = async (
     });
 
     mediaRecorder.ondataavailable = onDataAvailable;
-    mediaRecorder.onstart = stopRecording;
+    mediaRecorder.onstop = stopRecording;
   }
 };
